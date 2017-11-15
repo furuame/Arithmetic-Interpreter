@@ -10,6 +10,8 @@ typedef enum {
     MINUS,
     MULTIPLY,
     DIVIDE,
+    LPAREN,
+    RPAREN,
     NONE
 } TYPE;
 

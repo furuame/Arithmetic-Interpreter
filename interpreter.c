@@ -1,6 +1,10 @@
 #include "interpreter.h"
 #include <string.h>
 
+static int term(interpreter *thiz);
+static int expr(interpreter *thiz);
+static int factor(interpreter *thiz);
+
 static int isDigit(char target)
 {
     if (target >= '0' && target <= '9')
@@ -84,6 +88,20 @@ static token get_next_token(interpreter *thiz)
             return ret;
         }
 
+        if (thiz->current_char == '(') {
+            ret.value = '(';
+            ret.type = LPAREN;
+            advance(thiz);
+            return ret;
+        }
+
+        if (thiz->current_char == ')') {
+            ret.value = ')';
+            ret.type = RPAREN;
+            advance(thiz);
+            return ret;
+        }
+
         printf("interpreter.c: Unavailable char exists\n");
         exit(0);
     }
@@ -102,18 +120,30 @@ static void match(interpreter *thiz, TYPE type)
 
 static int term(interpreter *thiz)
 {
-    int ret = thiz->current_token.value;
-    match(thiz, INTEGER);
+    int ret = factor(thiz);
+    while (thiz->current_token.type == MULTIPLY || \
+           thiz->current_token.type == DIVIDE) {
+        if (thiz->current_token.type == MULTIPLY) {
+            match(thiz, MULTIPLY);
+            ret *= factor(thiz);
+        }
+
+        if (thiz->current_token.type == DIVIDE) {
+            match(thiz, DIVIDE);
+            ret /= factor(thiz);
+        }
+    }
     return ret;
 }
 
 static int expr(interpreter *thiz)
 {
-    thiz->current_token = get_next_token(thiz);
+    //thiz->current_token = get_next_token(thiz);
     int result = 0;
 
     result += term(thiz);
-    do {
+    while (thiz->current_token.type != NONE && \
+           thiz->current_token.type != RPAREN) {
         switch(thiz->current_token.type) {
             case PLUS:
                 match(thiz, PLUS);
@@ -123,21 +153,30 @@ static int expr(interpreter *thiz)
                 match(thiz, MINUS);
                 result -= term(thiz);
                 break;
-            case MULTIPLY:
-                match(thiz, MULTIPLY);
-                result *= term(thiz);
-                break;
-            case DIVIDE:
-                match(thiz, DIVIDE);
-                result /= term(thiz);
-                break;
             default:
-                printf("Unavailable string\n");
-                exit(0);
+                break;
         }
-    } while (thiz->current_token.type != NONE);
+    }
 
     return result;
+}
+
+static int factor(interpreter *thiz)
+{
+    token current_token = thiz->current_token;
+    int ret = thiz->current_token.value;
+
+    if (current_token.type == INTEGER) {
+        match(thiz, INTEGER);
+        return ret;
+    } else if (current_token.type == LPAREN) {
+        match(thiz, LPAREN);
+        ret = expr(thiz);
+        match(thiz, RPAREN);
+        return ret;
+    }
+    printf("Unavailable expression!\n");
+    exit(0);
 }
 
 void interpreter_init(interpreter **thiz, const char *text)
@@ -152,5 +191,6 @@ void interpreter_init(interpreter **thiz, const char *text)
     (*thiz)->text = text;
     (*thiz)->current_char = text[0];
     (*thiz)->expr = expr;
+    (*thiz)->current_token = get_next_token(*thiz);
 }
 

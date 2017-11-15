@@ -7,8 +7,12 @@ This is a simple interpreter to calculate arithmetic expression referenced from 
 ## Need to know
 * This interpreter can execute mathematical expressions like '34+7-5+3' or '2 * 52 / 8', etc.
 * The numbers must be positive integers.
-* The supported operations are addition, subtraction, multiplication, division
+* The supported operations are addition (+), subtraction (-), multiplication (*), division (/)
 * The operations are executed from left to right, i.e. the interpreter doesn't give priority to multiplications, etc.
+* Support Precedence and Parentheses.
+
+## Limits
+* Number in the interpreter is handled with integer, so error exists when expression has float-point operation.
 
 ## Examples
 ```
