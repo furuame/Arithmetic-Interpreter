@@ -81,7 +81,7 @@ static void *expr(Parser *parser)
         BinNode_t *space = (BinNode_t *) malloc(sizeof(BinNode_t));
         space->op = current_token;
         space->left = node;
-        space->right = factor(parser);
+        space->right = term(parser);
 
         node = space;
     }
