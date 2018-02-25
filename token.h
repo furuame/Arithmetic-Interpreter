@@ -12,6 +12,7 @@ typedef enum {
     DIVIDE,
     LPAREN,
     RPAREN,
+    POWER,
     NONE
 } TYPE;
 

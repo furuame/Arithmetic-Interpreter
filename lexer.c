@@ -101,6 +101,13 @@ token_t get_next_token(Lexer *lexer)
             return ret;
         }
 
+        if (lexer->current_char == '^') {
+            ret.value = '^';
+            ret.type = POWER;
+            advance(lexer);
+            return ret;
+        }
+
         printf("interpreter.c: Unavailable char exists\n");
         exit(0);
     }

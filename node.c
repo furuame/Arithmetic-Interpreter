@@ -1,6 +1,19 @@
 #include "node.h"
 #include "token.h"
 
+/* return n ^ k */
+int mypow(int n, int k)
+{
+    int ret = n;
+    
+    if (k <= 0) return 1;
+
+    for (int i = 0; i < k - 1; i++) {
+        ret *= n;
+    }
+    return ret;
+}
+
 int visit_BinNode(BinNode_t *node)
 {
     switch (node->op.type) {
@@ -12,6 +25,8 @@ int visit_BinNode(BinNode_t *node)
             return visit(node->left) * visit(node->right);
         case DIVIDE:
             return visit(node->left) / visit(node->right);
+        case POWER:
+            return mypow(visit(node->left), visit(node->right));
         default:
             printf("node.c: Unavailable op type\n");
             exit(0);

@@ -49,7 +49,8 @@ static void *term(Parser *parser)
     Lexer *lexer = parser->lexer;
 
     while (lexer->current_token.type == MULTIPLY || \
-           lexer->current_token.type == DIVIDE) {
+           lexer->current_token.type == DIVIDE   || \
+           lexer->current_token.type == POWER) {
         
         token_t current_token = lexer->current_token;
         
@@ -59,6 +60,10 @@ static void *term(Parser *parser)
 
         if (current_token.type == DIVIDE) {
             match(lexer, DIVIDE);
+        }
+
+        if (current_token.type == POWER) {
+            match(lexer, POWER);
         }
         
         BinNode_t *space = (BinNode_t *) malloc(sizeof(BinNode_t));
