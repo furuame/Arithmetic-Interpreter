@@ -30,3 +30,12 @@ int visit(void *node)
     
     return visit_BinNode((BinNode_t *) node);
 }
+
+void free_node(void *node)
+{
+    if (((token_t *) node)->type != INTEGER) {
+        free_node(((BinNode_t *) node)->left);
+        free_node(((BinNode_t *) node)->right);
+    }
+    free(node);
+}

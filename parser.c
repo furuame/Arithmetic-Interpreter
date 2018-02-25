@@ -101,7 +101,13 @@ Parser *parser_init(const char *text)
     return parser;
 }
 
-void *parse(Parser *parser)
+void parser_destroy(Parser *parser)
 {
-    return expr(parser);
+   if (parser->ast) free_node(parser->ast);
+   free(parser);
+}
+
+void parse(Parser *parser)
+{
+    parser->ast = expr(parser);
 }

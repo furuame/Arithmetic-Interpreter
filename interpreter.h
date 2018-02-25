@@ -15,6 +15,7 @@ struct __interpreter {
 };
 
 Interpreter *interpreter_init(const char *text);
+void interpreter_destroy(Interpreter *interpreter);
 int interprete(Interpreter *interpreter);
 
 #endif

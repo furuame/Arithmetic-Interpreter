@@ -14,8 +14,14 @@ Interpreter *interpreter_init(const char *text)
     return interpreter;
 }
 
+void interpreter_destroy(Interpreter *interpreter)
+{
+    parser_destroy(interpreter->parser);
+    free(interpreter);
+}
+
 int interprete(Interpreter *interpreter)
 {
-    void *AST = parse(interpreter->parser);
-    return visit(AST); 
+    parse(interpreter->parser);
+    return visit(interpreter->parser->ast); 
 }

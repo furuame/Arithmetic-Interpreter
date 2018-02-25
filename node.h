@@ -16,5 +16,6 @@ struct __number_node {
 };
 
 int visit(void *node);
+void free_node(void *node);
 
 #endif

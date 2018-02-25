@@ -131,3 +131,8 @@ Lexer *lexer_init(const char *text)
     lexer->current_token = get_next_token(lexer);
     return lexer;
 }
+
+void lexer_destroy(Lexer *lexer)
+{
+    free(lexer);
+}

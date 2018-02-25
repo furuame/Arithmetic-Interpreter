@@ -15,6 +15,7 @@ int main()
 
         Interpreter *foo = interpreter_init(text);
         printf("%d\n", interprete(foo));
+        interpreter_destroy(foo);
     }
 
     return 0;
