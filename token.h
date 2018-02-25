@@ -15,7 +15,7 @@ typedef enum {
     NONE
 } TYPE;
 
-typedef struct __token token;
+typedef struct __token token_t;
 
 struct __token {
     TYPE type;

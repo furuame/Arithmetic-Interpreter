@@ -8,15 +8,13 @@
 int main()
 {
     char text[MAX_STRING_LEN];
-    interpreter *foo = NULL;
 
     while (2 > 1) {
         printf("cal>> ");
         fgets(text, MAX_STRING_LEN, stdin);
 
-        interpreter_init(&foo, text);
-        printf("%d\n", foo->expr(foo));
-        free(foo);
+        Interpreter *foo = interpreter_init(text);
+        printf("%d\n", interprete(foo));
     }
 
     return 0;

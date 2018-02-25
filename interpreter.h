@@ -4,21 +4,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "token.h"
+#include "lexer.h"
+#include "node.h"
+#include "parser.h"
 
-#define _AVAILABLE_DIGITS 100
-
-typedef struct __interpreter interpreter;
+typedef struct __interpreter Interpreter;
 
 struct __interpreter {
-    int pos;
-    int len;
-    const char *text;
-    char current_char;
-    token current_token;
-
-    int (*expr)(interpreter *thiz);
+    Parser *parser;    
 };
 
-void interpreter_init(interpreter **thiz, const char *text);
+Interpreter *interpreter_init(const char *text);
+int interprete(Interpreter *interpreter);
 
 #endif
