@@ -11,16 +11,30 @@ static void *factor(Parser *parser)
 {
     Lexer *lexer = parser->lexer;
     token_t current_token = lexer->current_token;
-    NumNode_t *node = NULL;
 
-    if (current_token.type == INTEGER) {
+    if (current_token.type == PLUS) {
+        match(lexer, PLUS);
+        UnaryNode_t *node = (UnaryNode_t *) malloc(sizeof(UnaryNode_t));
+        node->type = NODE_UNARY_OP;
+        node->op = current_token;
+        node->expr = factor(parser);
+        return node;
+    } else if (current_token.type == MINUS) {
+        match(lexer, MINUS);
+        UnaryNode_t *node = (UnaryNode_t *) malloc(sizeof(UnaryNode_t));
+        node->type = NODE_UNARY_OP;
+        node->op = current_token;
+        node->expr = factor(parser);
+        return node;
+    } else if (current_token.type == INTEGER) {
         match(lexer, INTEGER);
-        node = (NumNode_t *) malloc(sizeof(NumNode_t));
+        NumNode_t *node = (NumNode_t *) malloc(sizeof(NumNode_t));
+        node->type = NODE_NUM;
         node->operand = current_token;
         return node;
     } else if (current_token.type == LPAREN) {
         match(lexer, LPAREN);
-        node = expr(parser);
+        void *node = expr(parser);
         match(lexer, RPAREN);
         return node;
     }
@@ -48,6 +62,7 @@ static void *term(Parser *parser)
         }
         
         BinNode_t *space = (BinNode_t *) malloc(sizeof(BinNode_t));
+        space->type = NODE_BINARY_OP;
         space->op = current_token;
         space->left = node;
         space->right = factor(parser);
@@ -79,6 +94,7 @@ static void *expr(Parser *parser)
         }
 
         BinNode_t *space = (BinNode_t *) malloc(sizeof(BinNode_t));
+        space->type = NODE_BINARY_OP;
         space->op = current_token;
         space->left = node;
         space->right = term(parser);
