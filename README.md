@@ -12,7 +12,6 @@ This is a simple interpreter to calculate arithmetic expression referenced from 
 
 ## Limits
 * Number in the interpreter is handled with integer, so error exists when expression has float-point operation.
-* The numbers must be positive integers.
 
 ## Examples
 ```
