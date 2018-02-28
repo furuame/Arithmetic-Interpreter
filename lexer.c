@@ -141,5 +141,5 @@ Lexer *lexer_init(const char *text)
 
 void lexer_destroy(Lexer *lexer)
 {
-    free(lexer);
+    if(lexer) free(lexer);
 }

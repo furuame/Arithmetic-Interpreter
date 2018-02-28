@@ -124,8 +124,10 @@ Parser *parser_init(const char *text)
 
 void parser_destroy(Parser *parser)
 {
-   if (parser->ast) free_node(parser->ast);
-   free(parser);
+    if (parser) {
+        if (parser->ast) free_node(parser->ast);
+        free(parser);
+    }
 }
 
 void parse(Parser *parser)
